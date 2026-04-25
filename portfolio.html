@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sreeraj Ramachandran — Network Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1219;
+    --card: #111820;
+    --border: #1e2d3d;
+    --accent: #00e5ff;
+    --accent2: #00ff9d;
+    --accent3: #ff6b35;
+    --text: #c8d8e8;
+    --muted: #4a6275;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    mix-blend-mode: screen;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-inner {
+    max-width: 900px;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+  .hero-name {
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 1.0;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+  .hero-name span {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+  }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    color: var(--accent2);
+    margin-top: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-top: 1.5rem;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1s forwards;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    cursor: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* decorative right side */
+  .hero-graphic {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    height: 340px;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 1.2s forwards;
+  }
+  .hero-graphic svg { width: 100%; height: 100%; }
+
+  /* SECTION COMMON */
+  section {
+    padding: 7rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 3rem;
+  }
+  .section-title span { color: var(--accent); }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--text);
+    line-height: 1.9;
+    margin-bottom: 1rem;
+    font-size: 0.97rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+  .stat-card:hover { border-color: var(--accent); }
+  .stat-num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 0.3rem;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--surface); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-cat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .skill-cat:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .skill-cat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+  .skill-cat-name {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .skill-tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.15);
+    color: var(--text);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: none;
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,255,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .project-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+  .project-card:hover::after { opacity: 1; }
+  .project-num {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+  .project-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.8rem;
+  }
+  .project-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--accent2);
+    border: 1px solid rgba(0,255,157,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  /* CERTIFICATIONS */
+  #certifications { background: var(--surface); }
+  .cert-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .cert-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    transition: border-color 0.2s;
+  }
+  .cert-item:hover { border-color: var(--accent3); }
+  .cert-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+  .cert-name {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .cert-body {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+    letter-spacing: 1px;
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .contact-text p {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--text);
+    text-decoration: none;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: none;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(6px); }
+  .contact-link-icon { font-size: 1.1rem; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .footer-dot {
+    width: 8px; height: 8px;
+    background: var(--accent2);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.9; }
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes rotateReverse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem; }
+    .hero-graphic { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SR // NET</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-tag">// Network Engineer &amp; Infrastructure Specialist</div>
+    <h1 class="hero-name">Sreeraj<br><span>Ramachandran</span></h1>
+    <div class="hero-role">&gt; Building resilient networks, one packet at a time</div>
+    <p class="hero-desc">
+      Designing, implementing, and securing enterprise-grade network infrastructure. 
+      Specialized in routing, switching, and network automation to keep systems fast, 
+      reliable, and secure.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+
+  <!-- Animated SVG graphic -->
+  <div class="hero-graphic">
+    <svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer rotating ring -->
+      <g style="animation: rotate 20s linear infinite; transform-origin: 170px 170px;">
+        <circle cx="170" cy="170" r="160" stroke="rgba(0,229,255,0.12)" stroke-width="1" stroke-dasharray="8 6"/>
+      </g>
+      <!-- Middle rotating ring -->
+      <g style="animation: rotateReverse 14s linear infinite; transform-origin: 170px 170px;">
+        <circle cx="170" cy="170" r="120" stroke="rgba(0,229,255,0.2)" stroke-width="1" stroke-dasharray="4 8"/>
+        <!-- nodes on middle ring -->
+        <circle cx="170" cy="50" r="5" fill="var(--accent)" opacity="0.8"/>
+        <circle cx="274" cy="225" r="5" fill="var(--accent2)" opacity="0.8"/>
+        <circle cx="66" cy="225" r="5" fill="var(--accent)" opacity="0.8"/>
+      </g>
+      <!-- Inner ring -->
+      <g style="animation: rotate 8s linear infinite; transform-origin: 170px 170px;">
+        <circle cx="170" cy="170" r="75" stroke="rgba(0,255,157,0.15)" stroke-width="1" stroke-dasharray="3 5"/>
+        <circle cx="170" cy="95" r="4" fill="var(--accent2)" opacity="0.9"/>
+        <circle cx="235" cy="208" r="4" fill="var(--accent)" opacity="0.9"/>
+        <circle cx="105" cy="208" r="4" fill="var(--accent3)" opacity="0.9"/>
+      </g>
+      <!-- Center hub -->
+      <circle cx="170" cy="170" r="36" fill="rgba(0,229,255,0.06)" stroke="var(--accent)" stroke-width="1.5"/>
+      <circle cx="170" cy="170" r="22" fill="rgba(0,229,255,0.1)" stroke="var(--accent)" stroke-width="1"/>
+      <circle cx="170" cy="170" r="8" fill="var(--accent)"/>
+      <!-- connection lines -->
+      <line x1="170" y1="134" x2="170" y2="95" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+      <line x1="201" y1="187" x2="235" y2="208" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+      <line x1="139" y1="187" x2="105" y2="208" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// 01. about</div>
+  <h2 class="section-title">Who I <span>Am</span></h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm Sreeraj Ramachandran, a passionate Network Engineer with deep expertise in designing 
+        and maintaining complex enterprise network environments. From LAN/WAN architecture to 
+        cloud connectivity, I bridge the gap between infrastructure needs and business goals.
+      </p>
+      <p>
+        My approach combines hands-on technical depth with a strategic mindset — ensuring 
+        networks are not just operational, but optimized, secure, and scalable for future demands.
+      </p>
+      <p>
+        Whether it's troubleshooting a critical outage, deploying a new SD-WAN solution, or 
+        automating repetitive network tasks, I bring precision and reliability to every project.
+      </p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Networks Deployed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">99.9%</div>
+        <div class="stat-label">Uptime Achieved</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Enterprise Clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// 02. skills</div>
+  <h2 class="section-title">Technical <span>Arsenal</span></h2>
+  <div class="skills-grid">
+    <div class="skill-cat reveal">
+      <div class="skill-cat-icon">🔀</div>
+      <div class="skill-cat-name">Routing &amp; Switching</div>
+      <div class="skill-tags">
+        <span class="skill-tag">BGP</span>
+        <span class="skill-tag">OSPF</span>
+        <span class="skill-tag">EIGRP</span>
+        <span class="skill-tag">STP</span>
+        <span class="skill-tag">VLANs</span>
+        <span class="skill-tag">MPLS</span>
+        <span class="skill-tag">QoS</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-icon">🛡️</div>
+      <div class="skill-cat-name">Network Security</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Firewall</span>
+        <span class="skill-tag">VPN/IPSec</span>
+        <span class="skill-tag">ACLs</span>
+        <span class="skill-tag">IDS/IPS</span>
+        <span class="skill-tag">Zero Trust</span>
+        <span class="skill-tag">NAC</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-icon">☁️</div>
+      <div class="skill-cat-name">Cloud Networking</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS VPC</span>
+        <span class="skill-tag">Azure VNet</span>
+        <span class="skill-tag">SD-WAN</span>
+        <span class="skill-tag">Direct Connect</span>
+        <span class="skill-tag">ExpressRoute</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-icon">⚙️</div>
+      <div class="skill-cat-name">Automation &amp; Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Ansible</span>
+        <span class="skill-tag">Netmiko</span>
+        <span class="skill-tag">Wireshark</span>
+        <span class="skill-tag">SNMP</span>
+        <span class="skill-tag">SolarWinds</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-icon">📡</div>
+      <div class="skill-cat-name">Wireless &amp; Protocols</div>
+      <div class="skill-tags">
+        <span class="skill-tag">802.11ax</span>
+        <span class="skill-tag">WPA3</span>
+        <span class="skill-tag">IPv4/IPv6</span>
+        <span class="skill-tag">DHCP</span>
+        <span class="skill-tag">DNS</span>
+        <span class="skill-tag">NTP</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-icon">🏢</div>
+      <div class="skill-cat-name">Vendors &amp; Platforms</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Cisco</span>
+        <span class="skill-tag">Juniper</span>
+        <span class="skill-tag">Palo Alto</span>
+        <span class="skill-tag">Fortinet</span>
+        <span class="skill-tag">Aruba</span>
+        <span class="skill-tag">MikroTik</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// 03. projects</div>
+  <h2 class="section-title">Featured <span>Work</span></h2>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">PROJECT_01</div>
+      <div class="project-title">Enterprise SD-WAN Migration</div>
+      <p class="project-desc">
+        Led a full-scale SD-WAN migration for a 30-site enterprise, replacing legacy MPLS 
+        with Cisco Viptela. Achieved 40% cost reduction and improved failover from minutes to seconds.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Cisco SD-WAN</span>
+        <span class="project-tag">MPLS</span>
+        <span class="project-tag">BGP</span>
+        <span class="project-tag">QoS</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">PROJECT_02</div>
+      <div class="project-title">Zero Trust Network Architecture</div>
+      <p class="project-desc">
+        Designed and implemented a Zero Trust security model across a hybrid cloud environment 
+        using Palo Alto Prisma, reducing the attack surface and achieving full microsegmentation.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Palo Alto</span>
+        <span class="project-tag">Zero Trust</span>
+        <span class="project-tag">Prisma</span>
+        <span class="project-tag">IAM</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">PROJECT_03</div>
+      <div class="project-title">Network Automation Pipeline</div>
+      <p class="project-desc">
+        Built a Python + Ansible automation framework to manage 200+ network devices, 
+        cutting manual configuration time by 80% and eliminating human error in deployments.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Ansible</span>
+        <span class="project-tag">Netmiko</span>
+        <span class="project-tag">CI/CD</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">PROJECT_04</div>
+      <div class="project-title">Multi-Site Data Center Interconnect</div>
+      <p class="project-desc">
+        Architected a dual data center active-active interconnect using VXLAN/EVPN fabric, 
+        enabling seamless workload mobility and achieving sub-second failover across sites.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">VXLAN</span>
+        <span class="project-tag">EVPN</span>
+        <span class="project-tag">BGP</span>
+        <span class="project-tag">Data Center</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">// 04. certifications</div>
+  <h2 class="section-title">Credentials &amp; <span>Certs</span></h2>
+  <div class="cert-list">
+    <div class="cert-item reveal">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">CCNP Enterprise</div>
+        <div class="cert-body">CISCO SYSTEMS</div>
+      </div>
+    </div>
+    <div class="cert-item reveal">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">CCNA Routing &amp; Switching</div>
+        <div class="cert-body">CISCO SYSTEMS</div>
+      </div>
+    </div>
+    <div class="cert-item reveal">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">AWS Solutions Architect</div>
+        <div class="cert-body">AMAZON WEB SERVICES</div>
+      </div>
+    </div>
+    <div class="cert-item reveal">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">CompTIA Network+</div>
+        <div class="cert-body">COMPTIA</div>
+      </div>
+    </div>
+    <div class="cert-item reveal">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">Fortinet NSE 4</div>
+        <div class="cert-body">FORTINET</div>
+      </div>
+    </div>
+    <div class="cert-item reveal">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">Juniper JNCIA</div>
+        <div class="cert-body">JUNIPER NETWORKS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// 05. contact</div>
+  <h2 class="section-title">Let's <span>Connect</span></h2>
+  <div class="contact-inner">
+    <div class="contact-text reveal">
+      <p>
+        Available for network infrastructure consulting, architecture reviews, 
+        and enterprise projects. Let's build something reliable together.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:sreeraj@email.com" class="contact-link">
+          <span class="contact-link-icon">📧</span>
+          sreeraj@email.com
+        </a>
+        <a href="https://linkedin.com/in/sreerajramachandran" class="contact-link" target="_blank">
+          <span class="contact-link-icon">💼</span>
+          linkedin.com/in/sreerajramachandran
+        </a>
+        <a href="https://github.com/sreerajr" class="contact-link" target="_blank">
+          <span class="contact-link-icon">🐙</span>
+          github.com/sreerajr
+        </a>
+      </div>
+    </div>
+    <div class="reveal" style="background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 2.5rem;">
+      <div style="font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 1.5rem;">// SEND A MESSAGE</div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" placeholder="Your Name" style="background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.8rem 1rem; border-radius: 2px; font-family: var(--mono); font-size: 0.82rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <input type="email" placeholder="Your Email" style="background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.8rem 1rem; border-radius: 2px; font-family: var(--mono); font-size: 0.82rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <textarea placeholder="Your Message" rows="4" style="background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.8rem 1rem; border-radius: 2px; font-family: var(--mono); font-size: 0.82rem; outline: none; resize: vertical; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        <button onclick="alert('Message sent! I\'ll get back to you soon.')" style="background: var(--accent); color: #000; border: none; padding: 0.9rem; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border-radius: 2px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='var(--accent2)'" onmouseout="this.style.background='var(--accent)'">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 Sreeraj Ramachandran. All rights reserved.</div>
+  <div style="display:flex;align-items:center;gap:0.6rem;">
+    <div class="footer-dot"></div>
+    <span style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);">Available for work</span>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+  });
+
+  function animateRing() {
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
